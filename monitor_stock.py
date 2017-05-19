@@ -47,10 +47,10 @@ def near(base_number, value):
 def check_rate(item, curr_value, threshold):
     #if int(curr_value) <= threshold:
     if near(int(curr_value), threshold):
-        print("!!!!! %s is near %d, at %d" % (item, threshold, curr_value))
+        print("!!!!! %s is near %d, at %d\n" % (item, threshold, curr_value))
         send_mail(item, curr_value, threshold)
     else:
-        print("%s is at %d, far from %d" % (item, curr_value, threshold))
+        print("%s is at %d, far from %d\n" % (item, curr_value, threshold))
 
 
 # special case for BTC value lookup:
@@ -59,8 +59,9 @@ r = requests.get(url, headers={'Accept': 'application/json'})
 btc_eur = Decimal(r.json()['bpi']['EUR']['rate_float'])
 check_rate("BTC", curr_value=btc_eur, threshold=1650)
 
+# check the tickers:
 for ticker, threshold in stocks.items():
-    print("\nticker %s, threshold %d" % (ticker, threshold))
+    #print("\nticker %s, threshold %d" % (ticker, threshold))
     try:
         price = Decimal(Share(ticker).get_days_low())
     except:
