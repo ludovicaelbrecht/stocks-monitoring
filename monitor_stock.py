@@ -5,7 +5,7 @@ import requests
 
 stocks = {
         'AMZN': 940,
-        'TSLA': 105,
+        'TSLA': 305,
 #        'EPA:ODET': 900
         }
 
