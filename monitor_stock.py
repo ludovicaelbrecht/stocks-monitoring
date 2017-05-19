@@ -30,18 +30,21 @@ def near(base_number, value):
         print("%d is not within 10 of %d (%d<->%d)" % (value, base_number, lower_pct, higher_pct))
         return False
 
-assert near(10, 9)
-assert near(10, 11)
-assert not near(10, 8)
-assert not near(10, 12)
+
+#disabled these -- they work, but make the output verbose:
+#assert near(10, 9)
+#assert near(10, 11)
+#assert not near(10, 8)
+#assert not near(10, 12)
 
 
 def check_rate(item, curr_value, threshold):
-    if int(curr_value) <= threshold:
-        print("!!!!! %s is below %d, at %f" % (item, threshold, curr_value))
+    #if int(curr_value) <= threshold:
+    if near(int(curr_value), threshold):
+        print("!!!!! %s is near %d, at %f" % (item, threshold, curr_value))
         send_mail(item, curr_value, threshold)
     else:
-        print("%s is at %f, above %d" % (item, curr_value, threshold))
+        print("%s is at %f, far from %d" % (item, curr_value, threshold))
 
 
 # special case for BTC value lookup:
@@ -52,6 +55,9 @@ check_rate("BTC", curr_value=btc_eur, threshold=1650)
 
 for ticker, threshold in stocks.items():
     print("ticker %s, threshold %d" % (ticker, threshold))
-    price = Decimal(Share(ticker).get_days_low())
+    try:
+        price = Decimal(Share(ticker).get_days_low())
+    except:
+        price = Decimal(Share(ticker).get_days_low())
     check_rate(ticker, curr_value=price, threshold=threshold)
 
