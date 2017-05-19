@@ -21,13 +21,17 @@ def send_mail(item, curr_value, threshold):
     # You can see a record of this email in your logs: https://mailgun.com/app/logs .
 
 def near(base_number, value):
-    higher_pct = base_number * 1.10
-    lower_pct = base_number - (base_number * 0.10)
-    if value >= lower_pct and value <= higher_pct:
-        print("%d is within 10 of %d (%d<->%d)" % (value, base_number, lower_pct, higher_pct))
+    # percentage strategy for near() means that there were many false positives (appeared close, but weren't)
+    #higher_val = base_number * 1.10
+    #lower_val = base_number - (base_number * 0.10)
+    higher_val = base_number + 2
+    lower_val = base_number - 2
+    
+    if value >= lower_val and value <= higher_val:
+        print("%d is close to %d (%d<->%d)" % (value, base_number, lower_val, higher_val))
         return True
     else:
-        print("%d is not within 10 of %d (%d<->%d)" % (value, base_number, lower_pct, higher_pct))
+        print("%d is far from %d (%d<->%d)" % (value, base_number, lower_val, higher_val))
         return False
 
 
@@ -41,10 +45,10 @@ def near(base_number, value):
 def check_rate(item, curr_value, threshold):
     #if int(curr_value) <= threshold:
     if near(int(curr_value), threshold):
-        print("!!!!! %s is near %d, at %f" % (item, threshold, curr_value))
+        print("!!!!! %s is near %d, at %d" % (item, threshold, curr_value))
         send_mail(item, curr_value, threshold)
     else:
-        print("%s is at %f, far from %d" % (item, curr_value, threshold))
+        print("%s is at %d, far from %d" % (item, curr_value, threshold))
 
 
 # special case for BTC value lookup:
@@ -54,7 +58,7 @@ btc_eur = Decimal(r.json()['bpi']['EUR']['rate_float'])
 check_rate("BTC", curr_value=btc_eur, threshold=1650)
 
 for ticker, threshold in stocks.items():
-    print("ticker %s, threshold %d" % (ticker, threshold))
+    print("\nticker %s, threshold %d" % (ticker, threshold))
     try:
         price = Decimal(Share(ticker).get_days_low())
     except:
