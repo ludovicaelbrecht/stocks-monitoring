@@ -31,7 +31,7 @@ def near(base_number, value):
         print("%d is close to %d (%d<->%d)" % (value, base_number, lower_val, higher_val))
         return True
     else:
-        print("%d is far from %d (%d<->%d)" % (value, base_number, lower_val, higher_val))
+        print("%d is too far from %d (%d<->%d)" % (value, base_number, lower_val, higher_val))
         return False
 
 
