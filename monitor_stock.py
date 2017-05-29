@@ -7,7 +7,7 @@ from config import EMAIL_API_URL, EMAIL_API_KEY, EMAIL_FROM, EMAIL_TO
 stocks = {
         'AMZN': 940,
         'TSLA': 305,
-#FIXME##        'EPA:ODET': 900
+        'ODET.PA': 950
         }
 
 def send_mail(item, curr_value, threshold):
